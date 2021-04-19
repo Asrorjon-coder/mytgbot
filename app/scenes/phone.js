@@ -1,5 +1,6 @@
 const { Markup, Scenes } = require("telegraf");
 const { BaseScene } = Scenes;
+const db = require("../db/db");
 
 module.exports = new BaseScene("phone")
     .enter((ctx) =>
@@ -12,6 +13,7 @@ module.exports = new BaseScene("phone")
     )
     .on("contact", (ctx) => {
         const { phone_number } = ctx.message.contact;
+        db.query(`INSERT INTO person (phone) values ("${phone_number}")`);
         return ctx.reply(`your number: ${phone_number}`);
     })
     .command("main", (ctx) => ctx.scene.enter("main"))
